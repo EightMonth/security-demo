@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "f4b367da-9fd9-475b-854b-6d72012ff9fa",
+		"name": "security-demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "password获取token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oauth/token?username=user_1&password=123456&grant_type=password&scope=select&client_id=client_2&client_secret=123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user_1"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						},
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "scope",
+							"value": "select"
+						},
+						{
+							"key": "client_id",
+							"value": "client_2"
+						},
+						{
+							"key": "client_secret",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "client模式获取token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oauth/token?grant_type=client_credentials&scope=select&client_id=client_1&client_secret=123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user_1",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"disabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						},
+						{
+							"key": "scope",
+							"value": "select"
+						},
+						{
+							"key": "client_id",
+							"value": "client_1"
+						},
+						{
+							"key": "client_secret",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刷新token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "f5c103ff-07ad-4462-8ed2-5d1e94690a54",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "dev",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "dev",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/oauth/token"
+			},
+			"response": []
+		},
+		{
+			"name": "访问受限资源",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/order/1?access_token=d84ae23f-f404-49c7-9ce6-e24a333bfaa0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order",
+						"1"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "d84ae23f-f404-49c7-9ce6-e24a333bfaa0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "访问不受限资源",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/product/1"
+			},
+			"response": []
+		},
+		{
+			"name": "1.授权码-访问受限资源",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/qq/info/250577914/"
+			},
+			"response": []
+		},
+		{
+			"name": "2.尝试获取授权码 在浏览器访问",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "client_1",
+							"type": "text"
+						},
+						{
+							"key": "response_type",
+							"value": "code",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:8081/aiqiyi/qq/redirect",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth/authorize?response_type=code&client_id=dev&redirect_uri=http://www.baidu.com\n",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "client_id",
+							"value": "dev"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com\n"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.拿授权码获取token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "DAjSRy",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "dev",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "dev",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8080/oauth/token"
+			},
+			"response": []
+		}
+	]
+}
